@@ -1,0 +1,38 @@
+
+import re
+import json
+
+def stringToJSON(transaction_text):
+    lines = transaction_text.strip().split('\n')
+
+    transactions = []
+    for line in lines[1:]:
+        row = line.split()
+        if (len(row) < 6):   continue
+        description = row[0] + " " + row[1]
+        date = row[2]
+        credit = row[3]
+        debit = row[4]
+        amount = row[5]
+    
+        credit = "" if credit == "-" else credit
+        debit = "" if debit == "-" else debit
+    
+        transaction = {
+            "description": description.strip(),
+            "date": date.strip(),
+            "credit": credit.strip(),
+            "debit": debit.strip(),
+            "amount": amount.strip()
+        }
+        transactions.append(transaction)
+    
+    transactions_json = json.dumps(transactions, indent=4)
+    print(transactions_json)
+    
+#input
+transaction_text = """Description            Date            Credit       Debit      Amount
+		    Transaction 1       09/10/2023        10              -              110
+		      Really Long        10/10/2023         -               55              55
+		      Transaction 2"""
+stringToJSON(transaction_text)
